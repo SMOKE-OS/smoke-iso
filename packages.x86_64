@@ -130,7 +130,7 @@ zsh
 
 # --- SMOKE OS: Wayland & Hyprland ---
 hyprland
-waybar
+quickshell
 kitty
 rofi-wayland
 xdg-desktop-portal-hyprland
