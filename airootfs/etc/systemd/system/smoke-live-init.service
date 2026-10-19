@@ -1,0 +1,14 @@
+[Unit]
+Description=SMOKE OS Live User Initialization
+DefaultDependencies=no
+After=systemd-sysusers.service systemd-udevd.service
+Before=getty.target systemd-user-sessions.service
+Wants=systemd-user-sessions.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/smoke-live-init
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

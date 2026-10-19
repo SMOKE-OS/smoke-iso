@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+# Create the live user if not present
+if ! id -u smoke &>/dev/null; then
+    useradd -m -g users -G wheel,audio,video,input,storage,power,network -s /bin/bash smoke
+    passwd -d smoke
+    
+    # Passwordless sudo for live session
+    mkdir -p /etc/sudoers.d
+    echo "smoke ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/00-smoke
+    chmod 0440 /etc/sudoers.d/00-smoke
+fi
+
+# Ensure /home/smoke has correct ownership for anything seeded from /etc/skel
+chown -R smoke:users /home/smoke
