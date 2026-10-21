@@ -21,6 +21,24 @@ sudo pacman -S --needed archiso qemu-system-x86_64 edk2-ovmf
 
 ## 🛠️ Building the ISO
 
+### Option A: Using the Automated CI/CD Pipeline (Recommended)
+This repository includes a GitHub Actions workflow (`.github/workflows/build-iso.yml`) that builds the ISO in a clean, privileged Arch Linux container, signs/hashes it, and publishes a new GitHub Release.
+
+- **Trigger on Git Tag**: Push any tag matching `v*` (e.g. `git tag v0.1BETA && git push origin v0.1BETA`).
+- **Manual Trigger**: Run from the **Actions** tab in GitHub (`workflow_dispatch`) with custom version and timestamp options.
+- **Naming Format**:
+  ```text
+  Smoke_os_<time stamp>_v<0.x>BETA.iso
+  ```
+  *(Example: `Smoke_os_20261021_0650_v0.1BETA.iso`)*
+
+### Option B: Local Docker Build
+If Docker is installed on your machine:
+```bash
+./build.sh 0.1
+```
+
+### Option C: Native Arch Linux Build
 ```bash
 # 1. Clone repository
 git clone https://github.com/SMOKE-OS/smoke-iso.git
