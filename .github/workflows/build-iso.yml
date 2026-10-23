@@ -145,7 +145,8 @@ jobs:
         with:
           tag_name: ${{ steps.meta.outputs.release_tag }}
           name: "SMOKE OS ${{ steps.meta.outputs.version }}"
-          prerelease: true
+          prerelease: false
+          make_latest: true
           draft: false
           files: |
             ${{ steps.package.outputs.iso_path }}
