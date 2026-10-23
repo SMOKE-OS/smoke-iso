@@ -59,11 +59,13 @@ jobs:
             else
               VERSION="${RAW_TAG}"
             fi
+            RELEASE_TAG="${RAW_TAG}"
           else
             VERSION="v${{ inputs.version }}BETA"
+            RELEASE_TAG="${VERSION}"
           fi
 
-          # 2. Determine Timestamp
+          # 2. Determine Timestamp for the ISO filename
           if [[ "${{ inputs.timestamp_format }}" == "date" ]]; then
             TIMESTAMP=$(date -u +'%Y%m%d')
           else
@@ -72,7 +74,6 @@ jobs:
 
           # Format: Smoke_os_<timestamp>_v<0.x>BETA.iso
           TARGET_ISO_NAME="Smoke_os_${TIMESTAMP}_${VERSION}.iso"
-          RELEASE_TAG="${VERSION}-${TIMESTAMP}"
 
           echo "target_iso_name=${TARGET_ISO_NAME}" >> "$GITHUB_OUTPUT"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
@@ -142,8 +143,8 @@ jobs:
         if: ${{ github.ref_type == 'tag' || inputs.create_release == true }}
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || steps.meta.outputs.release_tag }}
-          name: "SMOKE OS ${{ steps.meta.outputs.version }} (${{ steps.meta.outputs.timestamp }})"
+          tag_name: ${{ steps.meta.outputs.release_tag }}
+          name: "SMOKE OS ${{ steps.meta.outputs.version }}"
           prerelease: true
           draft: false
           files: |
@@ -152,7 +153,15 @@ jobs:
           body: |
             # 🌫️ SMOKE OS Live Installation Media (${{ steps.meta.outputs.version }})
 
-            Automated early beta build of **SMOKE OS** generated with `archiso`.
+            Automated beta build of **SMOKE OS** generated with `archiso`.
+
+            ---
+
+            ## 📥 Direct Downloads
+            - 💿 [**Download ${{ steps.meta.outputs.target_iso_name }}**](https://github.com/${{ github.repository }}/releases/download/${{ steps.meta.outputs.release_tag }}/${{ steps.meta.outputs.target_iso_name }})
+            - 🔑 [**Download SHA256 Checksum**](https://github.com/${{ github.repository }}/releases/download/${{ steps.meta.outputs.release_tag }}/${{ steps.meta.outputs.target_iso_name }}.sha256)
+
+            ---
 
             ### 📦 Artifact Details
             - **ISO Image**: `${{ steps.meta.outputs.target_iso_name }}`
