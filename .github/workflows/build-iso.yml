@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version number (e.g., 0.1 for v0.1BETA)'
+        description: 'Version number (e.g., 0.1 for v0.1)'
         required: true
         default: '0.1'
         type: string
@@ -55,13 +55,14 @@ jobs:
             RAW_TAG="${{ github.ref_name }}"
             if [[ "$RAW_TAG" =~ ^v?[0-9]+\.[0-9]+.* ]]; then
               CLEAN_VER=$(echo "$RAW_TAG" | sed -E 's/^v//; s/BETA$//i')
-              VERSION="v${CLEAN_VER}BETA"
+              VERSION="v${CLEAN_VER}"
             else
               VERSION="${RAW_TAG}"
             fi
             RELEASE_TAG="${RAW_TAG}"
           else
-            VERSION="v${{ inputs.version }}BETA"
+            CLEAN_INPUT=$(echo "${{ inputs.version }}" | sed -E 's/^v//; s/BETA$//i')
+            VERSION="v${CLEAN_INPUT}"
             RELEASE_TAG="${VERSION}"
           fi
 
@@ -72,7 +73,7 @@ jobs:
             TIMESTAMP=$(date -u +'%Y%m%d_%H%M')
           fi
 
-          # Format: Smoke_os_<timestamp>_v<0.x>BETA.iso
+          # Format: Smoke_os_<timestamp>_v<0.x>.iso
           TARGET_ISO_NAME="Smoke_os_${TIMESTAMP}_${VERSION}.iso"
 
           echo "target_iso_name=${TARGET_ISO_NAME}" >> "$GITHUB_OUTPUT"

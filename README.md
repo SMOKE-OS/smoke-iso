@@ -28,9 +28,9 @@ This repository includes a GitHub Actions workflow (`.github/workflows/build-iso
 - **Manual Trigger**: Run from the **Actions** tab in GitHub (`workflow_dispatch`) with custom version and timestamp options.
 - **Naming Format**:
   ```text
-  Smoke_os_<time stamp>_v<0.x>BETA.iso
+  Smoke_os_<time stamp>_v<0.x>.iso
   ```
-  *(Example: `Smoke_os_20261021_0650_v0.1BETA.iso`)*
+  *(Example: `Smoke_os_20261021_0650_v0.1.iso`)*
 
 ### Option B: Local Docker Build
 If Docker is installed on your machine:

@@ -2,8 +2,9 @@
 set -euo pipefail
 
 VERSION="${1:-0.1}"
+CLEAN_VER=$(echo "$VERSION" | sed -E 's/^v//; s/BETA$//i')
 TIMESTAMP=$(date -u +'%Y%m%d_%H%M')
-TARGET_NAME="Smoke_os_${TIMESTAMP}_v${VERSION}BETA.iso"
+TARGET_NAME="Smoke_os_${TIMESTAMP}_v${CLEAN_VER}.iso"
 
 echo "==> Building SMOKE OS Live ISO: ${TARGET_NAME}"
 mkdir -p out work
